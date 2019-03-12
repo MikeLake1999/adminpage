@@ -185,7 +185,7 @@ if (!isset($_SESSION['username'])) {
                     <th class="hidden-phone">Catalog</th>
                     <th class="hidden-phone">Date Create</th>
                     <th class="hidden-phone">Active</th>
-                    <th class="hidden-phone">Admin ID Create</th>
+                    <th class="hidden-phone">Admin Create</th>
                     <th class="hidden-phone"></th>
                   </tr>
                 </thead>
@@ -200,7 +200,7 @@ if (!isset($_SESSION['username'])) {
                     <td class="center hidden-phone"><?php echo $row["CatalogName"] ?></td>
                     <td class="center hidden-phone"><?php echo $row["regdate"] ?></td>
                     <td class="center hidden-phone"><?php if ($row["ActivePost"] == 1) {echo'Working';} else if ($row["ActivePost"] == 0) {echo'Stop Working';}  ?></td>
-                    <td class="center hidden-phone"><?php echo $row["AdminID"] ?></td>
+                    <td class="center hidden-phone"><?php echo $row["AdminName"] ?></td>
                     <td class="">
                     <a  href="<?php echo 'update-post-manager.php?id=' . $row["PostID"] ?>" class="button button-blue">Update</a> 
                     </td>

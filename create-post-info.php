@@ -194,10 +194,10 @@ if (isset($_POST['create_post'])) {
                     }
                     ?>
                     <form method="post" action="">
-                        <div class="form-group">
+                        <!-- <div class="form-group">
                             <label for="PostID">PostID:</label>
                             <input type="text" name="PostID" id="PostID" class="form-control" required maxlength="50">
-                        </div>
+                        </div> -->
                         <div class="form-group">
                             <label for="NamePost">Name Post:</label>
                             <input type="text" class="form-control" name="NamePost" id="NamePost" required maxlength="50">
@@ -230,14 +230,11 @@ if (isset($_POST['create_post'])) {
                                 CKEDITOR.replace('editor1');
                             </script>
                         </div>
-                        <div class=" form-group">
-                            <label for="AdminID">Admin ID Create:</label>
-                            <input type="text" name="AdminID" id="AdminID" class="form-control" maxlength="1000" ">
-                        </div>
+                            <input type="hidden" name="AdminID" id="AdminID" class="form-control" maxlength="1000" value="<?php echo $_SESSION['username']; ?>" ">
                         <div class=" form-group">
                             <label for="ActivePost">Active:</label>
                             <select class="form-control" name="ActivePost" id="ActivePost">
-                                <option value="" selected>Select</option>
+                                <option value="0" selected>Select</option>
                                 <option value="1">- Active</option>
                                 <option value="0">- Inactive</option>
                             </select>

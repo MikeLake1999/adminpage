@@ -25,7 +25,7 @@ class Post
    public function post_list()
    {
 
-      $sql = "SELECT PostID, AdminID, CatalogName, NamePost, Brief , Img, Content, ViewNumber, PostHot, ActivePost, AuthorPost,  DATE_FORMAT(DatePost,'%M %d, %Y') AS regdate from posts ORDER BY DatePost DESC";
+      $sql = "SELECT PostID, AdminName, CatalogName, NamePost, Brief , Img, Content, ViewNumber, PostHot, ActivePost, AuthorPost,  DATE_FORMAT(DatePost,'%M %d, %Y') AS regdate from posts ORDER BY DatePost DESC";
       $result = $this->conn->query($sql);
       return $result;
    }
@@ -53,7 +53,7 @@ class Post
          $AuthorPost = mysqli_real_escape_string($this->conn, trim($post_data['AuthorPost']));
          $ActivePost = mysqli_real_escape_string($this->conn, trim($post_data['ActivePost']));
 
-         $sql = "INSERT INTO posts (PostID, AdminID, CatalogName, NamePost, Brief , Img, Content, ViewNumber, PostHot, AuthorPost, ActivePost) VALUES ('$PostID', '$AdminID', '$CatalogName','$NamePost','$Brief', '$Img', '$Content', '$ViewNumber', '$PostHot', '$AuthorPost', '$ActivePost')";
+         $sql = "INSERT INTO posts (PostID, AdminName, CatalogName, NamePost, Brief , Img, Content, ViewNumber, PostHot, AuthorPost, ActivePost) VALUES ('$PostID', '$AdminID', '$CatalogName','$NamePost','$Brief', '$Img', '$Content', '$ViewNumber', '$PostHot', '$AuthorPost', '$ActivePost')";
 
          $result = $this->conn->query($sql);
 
@@ -73,7 +73,7 @@ class Post
       if (isset($id)) {
          $post_id = mysqli_real_escape_string($this->conn, trim($id));
 
-         $sql = "SELECT PostID, AdminID, CatalogName, NamePost, Brief , Img, Content, ViewNumber, PostHot, ActivePost, AuthorPost,  DATE_FORMAT(DatePost,'%M %d, %Y') AS regdate from posts Where PostID='$post_id' ORDER BY DatePost DESC";
+         $sql = "SELECT PostID, AdminName, CatalogName, NamePost, Brief , Img, Content, ViewNumber, PostHot, ActivePost, AuthorPost,  DATE_FORMAT(DatePost,'%M %d, %Y') AS regdate from posts Where PostID='$post_id' ORDER BY DatePost DESC";
 
          $result = $this->conn->query($sql);
 

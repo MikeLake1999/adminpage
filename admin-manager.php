@@ -374,7 +374,7 @@ if (isset($_GET['id'])) {
                         <div class="form-group">
                             <label for="active">Active:</label>
                             <select class="form-control" name="active" id="active">
-                                <option value="" selected>Select</option>
+                                <option value="0" selected>Select</option>
                                 <option value="1">- Active</option>
                                 <option value="0">- Inactive</option>
                             </select>

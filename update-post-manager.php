@@ -252,8 +252,8 @@ if (isset($_GET['id'])) {
                         </div>
 
 
-                        <input value="<?php if (isset($post_info['AdminID'])) {
-                                            echo $post_info['AdminID'];
+                        <input value="<?php if (isset($post_info['AdminName'])) {
+                                            echo $post_info['AdminName'];
                                         } ?>" type="hidden" name="AdminID" id="AdminID" class="form-control" maxlength="1000" ">
                         
                         <div class=" form-group">
