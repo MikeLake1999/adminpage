@@ -8,13 +8,13 @@ if (!isset($_SESSION['username'])) {
 
 ?>
 <?php
-include 'admin.php';
-$admin_obj = new Admin();
+include 'album.php';
+$album_obj = new Album();
 
 if (isset($_GET['id'])) {
-    $admin_info = $admin_obj->view_admin_by_admin_id($_GET['id']);
-    if (isset($_POST['update_admin']) && $_GET['id'] === $_POST['id']) {
-        $admin_obj->update_admin_info($_POST);
+    $album_info = $album_obj->view_music_by_music_id($_GET['id']);
+    if (isset($_POST['update_music']) && $_GET['id'] === $_POST['id']) {
+        $album_obj->update_music_info($_POST);
     }
 }
 
@@ -171,9 +171,9 @@ if (isset($_GET['id'])) {
                             <span>Data Tables</span>
                         </a>
                         <ul class="sub">
-                            <?php if ($_SESSION['username'] == 'sonlicha') {echo "<li class='active'><a href='admin-manager.php'>Admin Manager</a></li>";} ?>
+                            <?php if ($_SESSION['username'] == 'sonlicha') {echo "<li><a href='admin-manager.php'>Admin Manager</a></li>";} ?>
                             <li><a href="post-manager.php">Post Manager</a></li>
-                            <li><a href="album-manager.php">Album Manager</a></li>
+                            <li class="active"><a href="album-manager.php">Album Manager</a></li>
                         </ul>
                     </li>
             </div>
@@ -182,7 +182,7 @@ if (isset($_GET['id'])) {
 
         <section id="main-content">
             <section class="wrapper">
-                <h3><i class="fa fa-angle-right"></i> Update Admin</h3>
+                <h3><i class="fa fa-angle-right"></i> Update Music</h3>
                 <div class="mt ">
                     <div class="col-lg-12">
                         <?php
@@ -195,48 +195,36 @@ if (isset($_GET['id'])) {
         }
         ?>
                         <form method="post" action="">
-                            <input type="hidden" name="id" id="id" value="<?php if (isset($admin_info['AdminID'])) {
-                                                                                echo $admin_info['AdminID'];
+                            <input type="text" name="id" id="id" value="<?php if (isset($album_info['MusicID'])) {
+                                                                                echo $album_info['MusicID'];
                                                                             } ?>">
 
                             <div class="form-group">
-                                <label for="name_Admin">Admin Name:</label>
-                                <input type="text" value="<?php if (isset($admin_info['NameAdmin'])) {
-                                                                echo $admin_info['NameAdmin'];
-                                                            } ?>" class="form-control" name="name_Admin" id="name_Admin" required maxlength="50">
+                                <label for="music_Name">Music Name:</label>
+                                <input type="text" value="<?php if (isset($album_info['MusicName'])) {
+                                                                echo $album_info['MusicName'];
+                                                            } ?>" class="form-control" name="music_Name" id="music_Name" required maxlength="50">
                             </div>
                             <div class="form-group">
-                                <label for="admin_Name">Admin Account:</label>
-                                <input type="text" value="<?php if (isset($admin_info['AdminName'])) {
-                                                                echo $admin_info['AdminName'];
-                                                            } ?>" class="form-control" name="admin_Name" id="admin_Name" required maxlength="50">
+                                <label for="composer">Composer:</label>
+                                <input type="text" value="<?php if (isset($album_info['Composer'])) {
+                                                                echo $album_info['Composer'];
+                                                            } ?>" class="form-control" name="composer" id="composer" required maxlength="50">
                             </div>
-                            <div class="form-group">
-                                <label for="admin_Password">Password:</label>
-                                <input type="text" value="<?php if (isset($admin_info['AdminPassword'])) {
-                                                                echo $admin_info['AdminPassword'];
-                                                            } ?>" class="form-control" name="admin_Password" id="admin_Password" required maxlength="50">
-                            </div>
-                            <div class="form-group">
-                                <label for="phone">Phone:</label>
-                                <input value="<?php if (isset($admin_info['Phone'])) {
-                                                    echo $admin_info['Phone'];
-                                                } ?>" type="text" name="phone" id="phone" class="form-control" maxlength="50">
-
-                            </div>
+                            
                             <div class="form-group">
                                 <label for="active">Active:</label>
                                 <select class="form-control" name="active" id="active">
                                     <option value="" selected>Select</option>
-                                    <option value="1" <?php if (isset($admin_info['Active']) && $admin_info['Active'] == '1') {
+                                    <option value="1" <?php if (isset($album_info['Active']) && $album_info['Active'] == '1') {
                                                             echo 'selected';
                                                         } ?>>- Active</option>
-                                    <option value="0" <?php if (isset($admin_info['Active']) && $admin_info['Active'] == '0') {
+                                    <option value="0" <?php if (isset($album_info['Active']) && $album_info['Active'] == '0') {
                                                             echo 'selected';
                                                         } ?>>- Inactive</option>
                                 </select>
                             </div>
-                            <input type="submit" class="button button-green" name="update_admin" value="Update" />
+                            <input type="submit" class="button button-green" name="update_music" value="Update" />
                         </form>
                     </div>
                 </div>

@@ -8,18 +8,18 @@ if (!isset($_SESSION['username'])) {
 
 ?>
 <?php
-include 'admin.php';
-$admin_obj = new Admin();
-$admin_list = $admin_obj->admin_list();
+include 'album.php';
+$album_obj = new Album();
+$album_list = $album_obj->album_list();
 
-if (isset($_POST['create_admin'])) {
-  $admin_obj->create_admin_info($_POST);
+if (isset($_POST['create_album'])) {
+  $album_obj->create_album_info($_POST);
 }
 
 if (isset($_GET['id'])) {
-    $admin_info = $admin_obj->view_admin_by_admin_id($_GET['id']);
-    if (isset($_POST['update_admin']) && $_GET['id'] === $_POST['id']) {
-      $admin_obj->update_admin_info($_POST);
+    $album_info = $album_obj->view_album_by_album_id($_GET['id']);
+    if (isset($_POST['update_album']) && $_GET['id'] === $_POST['id']) {
+      $album_obj->update_album_info($_POST);
     }
   }
 
@@ -173,9 +173,9 @@ if (isset($_GET['id'])) {
                             <span>Data Tables</span>
                         </a>
                         <ul class="sub">
-                            <?php if ($_SESSION['username'] == 'sonlicha') {echo "<li class='active'><a href='admin-manager.php'>Admin Manager</a></li>";} ?>
+                            <?php if ($_SESSION['username'] == 'sonlicha') {echo "<li><a href='admin-manager.php'>Admin Manager</a></li>";} ?>
                             <li><a href="post-manager.php">Post Manager</a></li>
-                            <li><a href="album-manager.php">Album Manager</a></li>
+                            <li class="active"><a href="album-manager.php">Album Manager</a></li>
                         </ul>
                     </li>
             </div>
@@ -187,7 +187,7 @@ if (isset($_GET['id'])) {
     </section>
     <section id="main-content" class="">
         <section class="wrapper">
-            <h3><i class="fa fa-angle-right"></i> Admin Manager<button type="button" class="button button-purple mt-12 pull-right" data-toggle="modal" data-target="#myModal">Create Admin</button> </h3>
+            <h3><i class="fa fa-angle-right"></i> Album Manager<button type="button" class="button button-purple mt-12 pull-right" data-toggle="modal" data-target="#myModal">Create Album</button> </h3>
             <div class="row mt">
                 <?php
                 if (isset($_SESSION['message'])) {
@@ -205,32 +205,29 @@ if (isset($_GET['id'])) {
                         <table cellpadding="0" cellspacing="0" border="0" width="100%" class="display table table-bordered" id="hidden-table-info">
                             <thead>
                                 <tr>
-                                    <th>ID</th>
-                                    <th>Name</th>
-                                    <th class="hidden-phone">Admin Account</th>
-                                    <th class="hidden-phone">Phone</th>
+                                    <th class="hidden-phone">Album ID</th>
+                                    <th>Album Name</th>
+                                    <th>Singer</th>
                                     <th class="hidden-phone">Active</th>
-                                    <th class="hidden-phone">Register Date</th>
                                     <th class="hidden-phone"></th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php if ($admin_list->num_rows > 0) {
-                                  while ($row = $admin_list->fetch_assoc()) {
+                                <?php if ($album_list->num_rows > 0) {
+                                  while ($row = $album_list->fetch_assoc()) {
                                     ?>
                                 <tr>
-                                    <td><?php echo $row["AdminID"] ?></td>
-                                    <td><?php echo $row["NameAdmin"] ?></td>
-                                    <td class="hidden-phone"><?php echo $row["AdminName"] ?></td>
-                                    <td class="center hidden-phone"><?php echo $row["Phone"] ?></td>
+                                    <td class="center hidden-phone"><?php echo $row["AlbumID"] ?></td>
+                                    <td><?php echo $row["AlbumName"] ?></td>
+                                    <td><?php echo $row["Singer"] ?></td>
                                     <td class="center hidden-phone"><?php if ($row["Active"] == 1) {
                                                                       echo 'Working';
                                                                     } else if ($row["Active"] == 0) {
                                                                       echo 'Stop Working';
                                                                     } ?></td>
-                                    <td class="center hidden-phone"><?php echo $row["regdate"] ?></td>
                                     <td class="">
-                                        <a href="<?php echo 'update-admin-manager.php?id=' . $row["AdminID"] ?>" class="button button-blue">Update</a>
+                                        <a href="<?php echo 'update-album-manager.php?id=' . $row["AlbumID"] ?>" class="button button-blue">Update</a>
+                                        <a href="<?php echo 'view-music-manager.php?id=' . $row["AlbumID"] ?>" class="button button-green">View</a>
                                     </td>
                                 </tr>
 
@@ -347,31 +344,19 @@ if (isset($_GET['id'])) {
                 <div class="modal-header black-bg">
                     <button type="button" class="close" style="color:white;" data-dismiss="modal">&times;</button>
 
-                    <h4 class="modal-title ">Create Admin</h4>
+                    <h4 class="modal-title ">Create Album</h4>
                 </div>
                 <div class="modal-body">
                     <form method="post" action="">
                         <div class="form-group">
-                            <label for="admin_ID">ID:</label>
-                            <input type="text" name="admin_ID" id="admin_ID" class="form-control" required maxlength="50">
+                            <label for="album_Name">Album Name:</label>
+                            <input class="form-control" name="album_Name" id="album_Name" required maxlength="50">
                         </div>
                         <div class="form-group">
-                            <label for="admin_Name">Admin Name:</label>
-                            <input class="form-control" name="admin_Name" id="admin_Name" required maxlength="50">
+                            <label for="singer">Singer:</label>
+                            <input class="form-control" name="singer" id="singer" required maxlength="50">
                         </div>
-                        <div class="form-group">
-                            <label for="name_Admin">Admin Account:</label>
-                            <input class="form-control" name="name_Admin" id="name_Admin" required maxlength="50">
-                        </div>
-                        <div class="form-group">
-                            <label for="admin_Password">Password:</label>
-                            <input class="form-control" name="admin_Password" id="admin_Password" required maxlength="50">
-                        </div>
-                        <div class="form-group">
-                            <label for="phone">Phone:</label>
-                            <input type="text" name="phone" id="phone" class="form-control" maxlength="50">
-
-                        </div>
+                        
                         <div class="form-group">
                             <label for="active">Active:</label>
                             <select class="form-control" name="active" id="active">
@@ -381,7 +366,7 @@ if (isset($_GET['id'])) {
                             </select>
                         </div>
 
-                        <input type="submit" class="button button-green" name="create_admin" value="Submit" />
+                        <input type="submit" class="button button-green" name="create_album" value="Submit" />
                     </form>
                 </div>
             </div>

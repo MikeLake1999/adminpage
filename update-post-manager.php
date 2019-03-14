@@ -146,7 +146,7 @@ if (isset($_GET['id'])) {
             </div>
             <div class="top-menu">
                 <ul class="nav pull-right top-menu">
-                    <li><a class="logout" href="index.php?logout='1'">Logout</a></li>
+                    <li><a class="logout" style="background-color: red;" href="index.php?logout='1'">Logout</a></li>
                 </ul>
             </div>
         </header>
@@ -159,7 +159,7 @@ if (isset($_GET['id'])) {
             <div id="sidebar" class="nav-collapse ">
                 <!-- sidebar menu start-->
                 <ul class="sidebar-menu" id="nav-accordion">
-                    <p class="centered"><a href="profile.html"><img src="img/ui-sam.jpg" class="img-circle" width="80"></a></p>
+                    <p class="centered"><a><img src="img/ui-sam.jpg" class="img-circle" width="80"></a></p>
                     <h5 class="centered"><?php echo "<p class='error'>" . $_SESSION['username'] . "</p>"; ?></h5>
                     <li class="mt">
                         <a href="admin-homepage.php">
@@ -174,8 +174,9 @@ if (isset($_GET['id'])) {
                             <span>Data Tables</span>
                         </a>
                         <ul class="sub">
-                            <li><a href="admin-manager.php">Admin Manager</a></li>
+                            <?php if ($_SESSION['username'] == 'sonlicha') {echo "<li><a href='admin-manager.php'>Admin Manager</a></li>";} ?>
                             <li class="active"><a href="post-manager.php">Post Manager</a></li>
+                            <li><a href="album-manager.php">Album Manager</a></li>
                         </ul>
 
                     </li>
@@ -191,13 +192,14 @@ if (isset($_GET['id'])) {
             <div class="mt ">
                 <div class="col-lg-12">
                     <?php
-                    if (isset($_SESSION['message'])) {
-                        echo "<p class='custom-alert'>" . $_SESSION['message'] . "</p>";
-                        $url1 = $_SERVER['REQUEST_URI'];
-                        header("Refresh: 1; URL=$url1");
-                        unset($_SESSION['message']);
-                    }
-                    ?>
+        if (isset($_SESSION['message'])) {
+            echo "<p class='custom-alert'>" . $_SESSION['message'] . "</p>";
+            ?>
+            <meta http-equiv="refresh" content="0.5; url="<?php echo $_SERVER['PHP_SELF']; ?>">
+            <?php
+            unset($_SESSION['message']);
+        }
+        ?>
                     <form method="post" action="">
 
                         <input value="<?php if (isset($post_info['PostID'])) {
@@ -220,13 +222,25 @@ if (isset($_GET['id'])) {
                         <div class="form-group">
                             <label for="CatalogName">Catalog:</label>
                             <select class="form-control" name="CatalogName" id="CatalogName">
-                                <option value="" selected>Select</option>
+                                <option value="GALLERY" selected>Select</option>
+                                <option value="FEATURED" <?php if (isset($post_info['CatalogName']) && $post_info['CatalogName'] == 'FEATURED') {
+                                                            echo 'selected';
+                                                        } ?>>- FEATURED</option>
                                 <option value="NEWS" <?php if (isset($post_info['CatalogName']) && $post_info['CatalogName'] == 'NEWS') {
                                                             echo 'selected';
                                                         } ?>>- NEWS</option>
                                 <option value="BLOG" <?php if (isset($post_info['CatalogName']) && $post_info['CatalogName'] == 'BLOG') {
                                                             echo 'selected';
                                                         } ?>>- BLOG</option>
+                                <option value="MUSIC" <?php if (isset($post_info['CatalogName']) && $post_info['CatalogName'] == 'MUSIC') {
+                                                            echo 'selected';
+                                                        } ?>>- MUSIC</option>
+                                <option value="EVENTS" <?php if (isset($post_info['CatalogName']) && $post_info['CatalogName'] == 'EVENTS') {
+                                                            echo 'selected';
+                                                        } ?>>- EVENT</option>
+                                <option value="GALLERY" <?php if (isset($post_info['CatalogName']) && $post_info['CatalogName'] == 'GALLERY') {
+                                                            echo 'selected';
+                                                        } ?>>- GALLERY</option>
                             </select>
                         </div>
                         <div class="form-group">

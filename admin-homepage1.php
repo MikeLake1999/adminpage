@@ -60,7 +60,7 @@
       </div>
       <div class="top-menu">
         <ul class="nav pull-right top-menu">
-          <li><a class="logout" style="background-color: red;" href="index.php?logout='1'">Logout</a></li>
+          <li><a class="logout" href="index.php?logout='1'">Logout</a></li>
         </ul>
       </div>
     </header>
@@ -73,7 +73,7 @@
       <div id="sidebar" class="nav-collapse ">
         <!-- sidebar menu start-->
         <ul class="sidebar-menu" id="nav-accordion">
-          <p class="centered"><a><img src="img/ui-sam.jpg" class="img-circle" width="80"></a></p>
+          <p class="centered"><a href="profile.html"><img src="img/ui-sam.jpg" class="img-circle" width="80"></a></p>
           <h5 class="centered"><?php echo "<p class='error'>" .$_SESSION['username']. "</p>"; ?></h5>
           <li class="mt">
             <a class="active" href="admin-homepage.php">
@@ -88,9 +88,7 @@
               <span>Data Tables</span>
               </a>
             <ul class="sub">
-              <?php if ($_SESSION['username'] == 'sonlicha') {echo "<li><a href='admin-manager.php'>Admin Manager</a></li>";} ?>
               <li><a href="post-manager.php">Post Manager</a></li>
-              <li><a href="album-manager.php">Album Manager</a></li>
             </ul>
           </li>
       </div>

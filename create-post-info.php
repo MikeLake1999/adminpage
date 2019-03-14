@@ -143,7 +143,7 @@ if (isset($_POST['create_post'])) {
             </div>
             <div class="top-menu">
                 <ul class="nav pull-right top-menu">
-                    <li><a class="logout" href="index.php?logout='1'">Logout</a></li>
+                    <li><a class="logout" style="background-color: red;" href="index.php?logout='1'">Logout</a></li>
                 </ul>
             </div>
         </header>
@@ -156,7 +156,7 @@ if (isset($_POST['create_post'])) {
             <div id="sidebar" class="nav-collapse ">
                 <!-- sidebar menu start-->
                 <ul class="sidebar-menu" id="nav-accordion">
-                    <p class="centered"><a href="profile.html"><img src="img/ui-sam.jpg" class="img-circle" width="80"></a></p>
+                    <p class="centered"><a><img src="img/ui-sam.jpg" class="img-circle" width="80"></a></p>
                     <h5 class="centered"><?php echo "<p class='error'>" . $_SESSION['username'] . "</p>"; ?></h5>
                     <li class="mt">
                         <a href="admin-homepage.php">
@@ -171,8 +171,9 @@ if (isset($_POST['create_post'])) {
                             <span>Data Tables</span>
                         </a>
                         <ul class="sub">
-                            <li><a href="admin-manager.php">Admin Manager</a></li>
+                            <?php if ($_SESSION['username'] == 'sonlicha') {echo "<li><a href='admin-manager.php'>Admin Manager</a></li>";} ?>
                             <li class="active"><a href="post-manager.php">Post Manager</a></li>
+                            <li><a href="album-manager.php">Album Manager</a></li>
                         </ul>
 
                     </li>
@@ -200,7 +201,7 @@ if (isset($_POST['create_post'])) {
                         </div> -->
                         <div class="form-group">
                             <label for="NamePost">Name Post:</label>
-                            <input type="text" class="form-control" name="NamePost" id="NamePost" required maxlength="50">
+                            <input type="text" class="form-control" name="NamePost" id="NamePost" required maxlength="1000">
                         </div>
                         <div class="form-group">
                             <label for="AuthorPost">Author:</label>
@@ -211,13 +212,17 @@ if (isset($_POST['create_post'])) {
                             <label for="CatalogName">Catalog:</label>
                             <select class="form-control" name="CatalogName" id="CatalogName">
                                 <option value="" selected>Select</option>
+                                <option value="FEATURED">- FEATURED</option>
                                 <option value="NEWS">- NEWS</option>
                                 <option value="BLOG">- BLOG</option>
+                                <option value="MUSIC">- MUSIC</option>
+                                <option value="EVENTS">- EVENTS</option>
+                                <option value="GALLERY">- GALLERY</option>
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="Brief">Brief:</label>
-                            <input type="text" name="Brief" id="Brief" class="form-control" maxlength="1000" ">
+                            <input type="text" name="Brief" id="Brief" class="form-control" maxlength="100000" ">
                         </div>
                         <div class=" form-group">
                             <label for="Img">Image:</label>

@@ -120,7 +120,7 @@ if (!isset($_SESSION['username'])) {
       </div>
       <div class="top-menu">
         <ul class="nav pull-right top-menu">
-          <li><a class="logout" href="index.php?logout='1'">Logout</a></li>
+          <li><a class="logout" style="background-color:red;" href="index.php?logout='1'">Logout</a></li>
         </ul>
       </div>
     </header>
@@ -133,7 +133,7 @@ if (!isset($_SESSION['username'])) {
       <div id="sidebar" class="nav-collapse ">
         <!-- sidebar menu start-->
         <ul class="sidebar-menu" id="nav-accordion">
-          <p class="centered"><a href="profile.html"><img src="img/ui-sam.jpg" class="img-circle" width="80"></a></p>
+          <p class="centered"><a><img src="img/ui-sam.jpg" class="img-circle" width="80"></a></p>
           <h5 class="centered"><?php echo "<p class='error'>" .$_SESSION['username']. "</p>"; ?></h5>
           <li class="mt">
             <a  href="admin-homepage.php">
@@ -148,8 +148,9 @@ if (!isset($_SESSION['username'])) {
               <span>Data Tables</span>
               </a>
             <ul class="sub">
-              <li><a href="admin-manager.php">Admin Manager</a></li>
+              <?php if ($_SESSION['username'] == 'sonlicha') {echo "<li><a href='admin-manager.php'>Admin Manager</a></li>";} ?>
               <li class="active"><a href="post-manager.php">Post Manager</a></li>
+              <li><a href="album-manager.php">Album Manager</a></li>
             </ul>
             
           </li>
@@ -179,9 +180,9 @@ if (!isset($_SESSION['username'])) {
               <table cellpadding="0" cellspacing="0" border="0" width="100%" class="display table table-bordered" id="hidden-table-info">
                 <thead>
                   <tr>
-                    <th>Post ID</th>
+                    <th class="hidden-phone">Post ID</th>
                     <th>Post Name</th>
-                    <th class="hidden-phone">Author</th>
+                    <th>Author</th>
                     <th class="hidden-phone">Catalog</th>
                     <th class="hidden-phone">Date Create</th>
                     <th class="hidden-phone">Active</th>
@@ -194,9 +195,9 @@ if (!isset($_SESSION['username'])) {
                   while ($row = $post_list->fetch_assoc()) {
                 ?>
                   <tr>
-                    <td><?php echo $row["PostID"] ?></td>
+                    <td class="center hidden-phone"><?php echo $row["PostID"] ?></td>
                     <td><?php echo $row["NamePost"] ?></td>
-                    <td class="hidden-phone"><?php echo $row["AuthorPost"] ?></td>
+                    <td><?php echo $row["AuthorPost"] ?></td>
                     <td class="center hidden-phone"><?php echo $row["CatalogName"] ?></td>
                     <td class="center hidden-phone"><?php echo $row["regdate"] ?></td>
                     <td class="center hidden-phone"><?php if ($row["ActivePost"] == 1) {echo'Working';} else if ($row["ActivePost"] == 0) {echo'Stop Working';}  ?></td>
@@ -232,13 +233,13 @@ if (!isset($_SESSION['username'])) {
   </section>
   <!-- js placed at the end of the document so the pages load faster -->
   <script src="lib/jquery/jquery.min.js"></script>
-  <script type="text/javascript" language="javascript" src="lib/advanced-datatable/js/jquery.js"></script>
-  <script src="lib/bootstrap/js/bootstrap.min.js"></script>
-  <script class="include" type="text/javascript" src="lib/jquery.dcjqaccordion.2.7.js"></script>
-  <script src="lib/jquery.scrollTo.min.js"></script>
-  <script src="lib/jquery.nicescroll.js" type="text/javascript"></script>
-  <script type="text/javascript" language="javascript" src="lib/advanced-datatable/js/jquery.dataTables.js"></script>
-  <script type="text/javascript" src="lib/advanced-datatable/js/DT_bootstrap.js"></script>
+    <script type="text/javascript" language="javascript" src="lib/advanced-datatable/js/jquery.js"></script>
+    <script src="lib/bootstrap/js/bootstrap.min.js"></script>
+    <script class="include" type="text/javascript" src="lib/jquery.dcjqaccordion.2.7.js"></script>
+    <script src="lib/jquery.scrollTo.min.js"></script>
+    <script src="lib/jquery.nicescroll.js" type="text/javascript"></script>
+    <script src="vendor/datatables/jquery.dataTables.js"></script>
+    <script src="vendor/datatables/dataTables.bootstrap4.js"></script>
   
   <!--common script for all pages-->
   <script src="lib/common-scripts.js"></script>

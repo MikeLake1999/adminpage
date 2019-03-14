@@ -2,26 +2,27 @@
 session_start();
 
 if (!isset($_SESSION['username'])) {
-  $_SESSION['msg'] = "You must log in first";
-  header('location: admin-login-page.php');
+    $_SESSION['msg'] = "You must log in first";
+    header('location: admin-login-page.php');
 }
 
 ?>
 <?php
-include 'admin.php';
-$admin_obj = new Admin();
-$admin_list = $admin_obj->admin_list();
+include 'album.php';
+$album_obj = new Album();
 
-if (isset($_POST['create_admin'])) {
-  $admin_obj->create_admin_info($_POST);
+
+if (isset($_POST['create_music'])) {
+    $album_obj->create_music_info($_POST);
 }
 
 if (isset($_GET['id'])) {
-    $admin_info = $admin_obj->view_admin_by_admin_id($_GET['id']);
-    if (isset($_POST['update_admin']) && $_GET['id'] === $_POST['id']) {
-      $admin_obj->update_admin_info($_POST);
+    $album_info = $album_obj->view_album_by_album_id($_GET['id']);
+    if (isset($_POST['update_album']) && $_GET['id'] === $_POST['id']) {
+        $album_obj->update_album_info($_POST);
     }
-  }
+}
+$album_list = $album_obj->music_list($id = $album_info['AlbumID']);
 
 
 ?>
@@ -54,9 +55,9 @@ if (isset($_GET['id'])) {
     <link href="vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-    
-    
-<!-- Style Button -->
+
+
+    <!-- Style Button -->
     <style>
         .success {
             color: #3c763d;
@@ -90,13 +91,14 @@ if (isset($_GET['id'])) {
 
         /* Blue */
         .button-red {
-            background-color: #FF0000;
+            background-color: #800000;
         }
 
         /* Red */
         .button-green {
             background-color: #008000;
         }
+        
 
         /*Green */
         .button-purple {
@@ -173,9 +175,11 @@ if (isset($_GET['id'])) {
                             <span>Data Tables</span>
                         </a>
                         <ul class="sub">
-                            <?php if ($_SESSION['username'] == 'sonlicha') {echo "<li class='active'><a href='admin-manager.php'>Admin Manager</a></li>";} ?>
+                            <?php if ($_SESSION['username'] == 'sonlicha') {
+                                echo "<li><a href='admin-manager.php'>Admin Manager</a></li>";
+                            } ?>
                             <li><a href="post-manager.php">Post Manager</a></li>
-                            <li><a href="album-manager.php">Album Manager</a></li>
+                            <li class="active"><a href="album-manager.php">Album Manager</a></li>
                         </ul>
                     </li>
             </div>
@@ -187,17 +191,19 @@ if (isset($_GET['id'])) {
     </section>
     <section id="main-content" class="">
         <section class="wrapper">
-            <h3><i class="fa fa-angle-right"></i> Admin Manager<button type="button" class="button button-purple mt-12 pull-right" data-toggle="modal" data-target="#myModal">Create Admin</button> </h3>
+            <h3><i class="fa fa-angle-right"></i> Music Manager Album <?php if (isset($album_info['AlbumName'])) {
+                                                                            echo $album_info['AlbumName'];
+                                                                        } ?><button type="button" class="button button-purple mt-12 pull-right" data-toggle="modal" data-target="#myModal">Create Music</button> </h3>
             <div class="row mt">
                 <?php
                 if (isset($_SESSION['message'])) {
-                  echo "<p class='custom-alert'>" . $_SESSION['message'] . "</p>";
-                  ?>
+                    echo "<p class='custom-alert'>" . $_SESSION['message'] . "</p>";
+                    ?>
                 <meta http-equiv="refresh" content="0.5; url=" <?php echo $_SERVER['PHP_SELF']; ?>">
                 <?php
                 unset($_SESSION['message']);
-              }
-              ?>
+            }
+            ?>
                 <!-- page start-->
                 <div class="content-panel col-lg-12">
                     <div class="table table-striped table-condensed container">
@@ -205,40 +211,38 @@ if (isset($_GET['id'])) {
                         <table cellpadding="0" cellspacing="0" border="0" width="100%" class="display table table-bordered" id="hidden-table-info">
                             <thead>
                                 <tr>
-                                    <th>ID</th>
-                                    <th>Name</th>
-                                    <th class="hidden-phone">Admin Account</th>
-                                    <th class="hidden-phone">Phone</th>
+                                    <th class="hidden-phone">Music ID</th>
+                                    <th>Music Name</th>
+                                    <th>Singer</th>
                                     <th class="hidden-phone">Active</th>
-                                    <th class="hidden-phone">Register Date</th>
                                     <th class="hidden-phone"></th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php if ($admin_list->num_rows > 0) {
-                                  while ($row = $admin_list->fetch_assoc()) {
-                                    ?>
+                                <?php if ($album_list->num_rows > 0) {
+                                    while ($row = $album_list->fetch_assoc()) {
+                                        ?>
                                 <tr>
-                                    <td><?php echo $row["AdminID"] ?></td>
-                                    <td><?php echo $row["NameAdmin"] ?></td>
-                                    <td class="hidden-phone"><?php echo $row["AdminName"] ?></td>
-                                    <td class="center hidden-phone"><?php echo $row["Phone"] ?></td>
+                                    <td class="center hidden-phone"><?php echo $row["MusicID"] ?></td>
+                                    <td><?php echo $row["MusicName"] ?></td>
+                                    <td><?php echo $row["Composer"] ?></td>
                                     <td class="center hidden-phone"><?php if ($row["Active"] == 1) {
-                                                                      echo 'Working';
+                                                                        echo 'Working';
                                                                     } else if ($row["Active"] == 0) {
-                                                                      echo 'Stop Working';
+                                                                        echo 'Stop Working';
                                                                     } ?></td>
-                                    <td class="center hidden-phone"><?php echo $row["regdate"] ?></td>
                                     <td class="">
-                                        <a href="<?php echo 'update-admin-manager.php?id=' . $row["AdminID"] ?>" class="button button-blue">Update</a>
+                                        <a href="<?php echo 'update-music-manager.php?id=' . $row["MusicID"] ?>" class="button button-blue">Update</a>
+                                        
+                                        
                                     </td>
                                 </tr>
 
                                 <?php
 
-                              }
                             }
-                            ?>
+                        }
+                        ?>
 
                             </tbody>
                         </table>
@@ -261,15 +265,15 @@ if (isset($_GET['id'])) {
     </section>
     <!-- js placed at the end of the document so the pages load faster -->
     <script src="lib/jquery/jquery.min.js"></script>
-    
+
     <script src="lib/bootstrap/js/bootstrap.min.js"></script>
     <script class="include" type="text/javascript" src="lib/jquery.dcjqaccordion.2.7.js"></script>
     <script src="lib/jquery.scrollTo.min.js"></script>
     <script src="lib/jquery.nicescroll.js" type="text/javascript"></script>
     <script src="vendor/datatables/jquery.dataTables.js"></script>
     <script src="vendor/datatables/dataTables.bootstrap4.js"></script>
-    
-    
+
+
 
     <!--common script for all pages-->
     <script src="lib/common-scripts.js"></script>
@@ -347,31 +351,26 @@ if (isset($_GET['id'])) {
                 <div class="modal-header black-bg">
                     <button type="button" class="close" style="color:white;" data-dismiss="modal">&times;</button>
 
-                    <h4 class="modal-title ">Create Admin</h4>
+                    <h4 class="modal-title ">Create Music</h4>
                 </div>
                 <div class="modal-body">
                     <form method="post" action="">
+                        <input type="text" name="album_ID" id="album_ID" value="<?php if (isset($album_info['AlbumID'])) {
+                                                                            echo $album_info['AlbumID'];
+                                                                        } ?>">
                         <div class="form-group">
-                            <label for="admin_ID">ID:</label>
-                            <input type="text" name="admin_ID" id="admin_ID" class="form-control" required maxlength="50">
+                            <label for="music_Name">Music Name:</label>
+                            <input class="form-control" name="music_Name" id="music_Name" required maxlength="50">
                         </div>
                         <div class="form-group">
-                            <label for="admin_Name">Admin Name:</label>
-                            <input class="form-control" name="admin_Name" id="admin_Name" required maxlength="50">
+                            <label for="ulr_Music">URL:</label>
+                            <input class="form-control" name="ulr_Music" id="ulr_Music" required maxlength="1000">
                         </div>
                         <div class="form-group">
-                            <label for="name_Admin">Admin Account:</label>
-                            <input class="form-control" name="name_Admin" id="name_Admin" required maxlength="50">
+                            <label for="composer">Composer:</label>
+                            <input class="form-control" name="composer" id="composer" required maxlength="50">
                         </div>
-                        <div class="form-group">
-                            <label for="admin_Password">Password:</label>
-                            <input class="form-control" name="admin_Password" id="admin_Password" required maxlength="50">
-                        </div>
-                        <div class="form-group">
-                            <label for="phone">Phone:</label>
-                            <input type="text" name="phone" id="phone" class="form-control" maxlength="50">
 
-                        </div>
                         <div class="form-group">
                             <label for="active">Active:</label>
                             <select class="form-control" name="active" id="active">
@@ -381,7 +380,7 @@ if (isset($_GET['id'])) {
                             </select>
                         </div>
 
-                        <input type="submit" class="button button-green" name="create_admin" value="Submit" />
+                        <input type="submit" class="button button-green" name="create_music" value="Submit" />
                     </form>
                 </div>
             </div>

@@ -21,7 +21,7 @@ class Album
       }
 
    }
-
+// Album Controler --------------------------------------------------------
    public function album_list()
    {
 
@@ -29,6 +29,8 @@ class Album
       $result = $this->conn->query($sql);
       return $result;
    }
+
+
 
    public function album_number()
    {
@@ -41,12 +43,11 @@ class Album
    {
 
       if (isset($post_data['create_album'])) {
-         $album_ID = mysqli_real_escape_string($this->conn, trim($post_data['album_ID']));
-         $album_Name = mysqli_real_escape_string($this->conn, trim($post_data['adbum_Name']));
+         $album_Name = mysqli_real_escape_string($this->conn, trim($post_data['album_Name']));
          $singer = mysqli_real_escape_string($this->conn, trim($post_data['singer']));
          $active = mysqli_real_escape_string($this->conn, trim($post_data['active']));
 
-         $sql = "INSERT INTO album (AlbumID, AlbumName, Singer, Active) VALUES ('$album_ID', '$album_Name', '$singer', $active')";
+         $sql = "INSERT INTO album (AlbumName, Singer, Active) VALUES ('$album_Name', '$singer', '$active')";
 
          $result = $this->conn->query($sql);
 
@@ -55,7 +56,7 @@ class Album
             $_SESSION['message'] = "Successfully Created Album Info";
 
          }
-         unset($post_data['create_admin']);
+         unset($post_data['create_album']);
       }
 
 
@@ -80,19 +81,19 @@ class Album
    {
       if (isset($post_data['update_album']) && isset($post_data['id'])) {
 
-        $album_ID = mysqli_real_escape_string($this->conn, trim($post_data['album_ID']));
-        $album_Name = mysqli_real_escape_string($this->conn, trim($post_data['adbum_Name']));
+        $album_ID = mysqli_real_escape_string($this->conn, trim($post_data['id']));
+        $album_Name = mysqli_real_escape_string($this->conn, trim($post_data['album_Name']));
         $singer = mysqli_real_escape_string($this->conn, trim($post_data['singer']));
         $active = mysqli_real_escape_string($this->conn, trim($post_data['active']));
 
-         $sql = "UPDATE album SET AlbumID='$album_ID', AlbumName='$album_Name', Singer='$singer' Active='$active' WHERE AlbumID = $album_ID";
+         $sql = "UPDATE album SET AlbumName='$album_Name', Singer='$singer', Active='$active' WHERE AlbumID = $album_ID";
 
          $result = $this->conn->query($sql);
 
          if ($result) {
             $_SESSION['message'] = "Successfully Updated Album Info";
          }
-         unset($post_data['update_admin']);
+         unset($post_data['update_album']);
       }
    }
 
@@ -107,6 +108,101 @@ class Album
 
          if ($result) {
             $_SESSION['message'] = "Successfully Deleted Admin Info";
+
+         }
+      }
+    
+   }
+   
+
+
+   // Music Controler----------------------------------------------------------------------------------------------
+
+   public function music_list($id)
+   {
+      if (isset($id)) {
+         $album_ID = mysqli_real_escape_string($this->conn, trim($id));
+
+         $sql = "SELECT MusicID, AlbumID, MusicName, Composer, Active FROM music  where AlbumID='$album_ID'";
+
+         $result = $this->conn->query($sql);
+
+         return $result;
+
+      }
+   }
+
+   public function view_music_by_music_id($id)
+   {
+      if (isset($id)) {
+         $music_ID = mysqli_real_escape_string($this->conn, trim($id));
+
+         $sql = "SELECT MusicID, AlbumID, MusicName, Composer, Active FROM music  where MusicID='$music_ID'";
+
+         $result = $this->conn->query($sql);
+
+         return $result->fetch_assoc();
+
+      }
+   }
+
+
+
+
+   public function create_music_info($post_data = array())
+   {
+
+      if (isset($post_data['create_music'])) {
+         $album_ID = mysqli_real_escape_string($this->conn, trim($post_data['album_ID']));
+         $music_Name = mysqli_real_escape_string($this->conn, trim($post_data['music_Name']));
+         $ulr_Music = mysqli_real_escape_string($this->conn, trim($post_data['ulr_Music']));
+         $composer = mysqli_real_escape_string($this->conn, trim($post_data['composer']));
+         $active = mysqli_real_escape_string($this->conn, trim($post_data['active']));
+
+         $sql = "INSERT INTO music (AlbumID, MusicName, Ulrmusic, Composer, Active) VALUES ('$album_ID', '$music_Name','$ulr_Music', '$composer', '$active')";
+
+         $result = $this->conn->query($sql);
+
+         if ($result) {
+
+            $_SESSION['message'] = "Successfully Created Music Info";
+
+         }
+         unset($post_data['create_music']);
+      }
+
+
+   }
+
+   public function update_music_info($post_data = array())
+   {
+      if (isset($post_data['update_music']) && isset($post_data['id'])) {
+         $music_ID = mysqli_real_escape_string($this->conn, trim($post_data['id']));
+         $music_Name = mysqli_real_escape_string($this->conn, trim($post_data['music_Name']));
+         $composer = mysqli_real_escape_string($this->conn, trim($post_data['composer']));
+         $active = mysqli_real_escape_string($this->conn, trim($post_data['active']));
+
+         $sql = "UPDATE music SET MusicName = '$music_Name', Composer = '$composer', Active = '$active' WHERE music.MusicID = '$music_ID'";
+
+         $result = $this->conn->query($sql);
+
+         if ($result) {
+            $_SESSION['message'] = "Successfully Updated Music Info";
+         }
+         unset($post_data['update_music']);
+      }
+   }
+   public function delete_music_info_by_id($id)
+   {
+
+      if (isset($id)) {
+         $music_id = mysqli_real_escape_string($this->conn, trim($id));
+
+         $sql = "DELETE FROM  music  WHERE MusicID = '$music_id'";
+         $result = $this->conn->query($sql);
+
+         if ($result) {
+            $_SESSION['message'] = "Successfully Deleted Music Info";
 
          }
       }
